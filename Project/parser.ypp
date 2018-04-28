@@ -14,14 +14,15 @@
  *  - Put all your token definitions here
  *  - Put all your type definitions here
  *  - Put all your precedence/associativity rules here
- */
 
 
+//TODO UNCOMMENT
  %start Start
+*/
 
  %token T_Bool
  %token T_Char
- %token T_Int
+ %token T_Integer
  %token T_String
  %token T_Intptr
  %token T_Charptr
@@ -89,18 +90,62 @@
  *  the grammar for the language for this project here.
  */
 
+/** TODO Finish Start Method and Expression, Left hand statements and right hand statements
+Start        : Method
+             ;
+**/
 
- Start       : Procedure {printf("\nParsed\n");}
+Expr         : UnaryExpr Op
              ;
 
+Method       : Method
+             ;
 
- Type        : T_Int
- 	    | T_Char
- 	    | T_Charptr
- 	    | T_Intptr
- 	    | T_Bool
- 	    | T_String
- 	    ;
+MoreVars     : T_Comma T_Identifier MoreVars
+             |
+	          ;
+
+Type         : T_Integer
+       	    | T_Char
+       	    | T_Charptr
+       	    | T_Intptr
+       	    | T_Bool
+       	    | T_String
+       	    ;
+
+UnaryExpr    : T_Minus T_Num
+       	    | T_Minus T_Identifier
+       	    | T_Plus T_Num
+       	    | T_Plus T_Identifier
+       	    | T_Num
+       	    | T_True
+       	    | T_False
+       	    | T_Chartype
+       	    | T_Identifier
+       	    | T_Identifier T_Lbracket Expr T_Rbracket
+       	    | T_Not UnaryExpr
+       	    | T_Dereference T_Identifier
+       	    | T_Dereference T_Lparen Expr T_Rparen
+       	    | T_Address T_Identifier
+       	    | T_Address T_Identifier T_Lbracket Expr T_Rbracket
+       	    | T_Null
+       	    ;
+
+Op	          : T_Plus Expr
+       	    | T_Minus Expr
+       	    | T_Times Expr
+       	    | T_Divide Expr
+       	    | T_Equals Expr
+       	    | T_LT Expr
+       	    | T_LTE Expr
+       	    | T_GT Expr
+       	    | T_GTE Expr
+       	    | T_NE Expr
+       	    | T_Or Expr
+       	    | T_And Expr
+       	    |
+       	    ;
+
 
 /**
 List    : List Expr '.' {printf("parsed expresion\n");}
